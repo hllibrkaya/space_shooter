@@ -1,0 +1,3 @@
+C:/Users/EXCALIBUR/Documents/Kod/C++/OpenGL_SS/cmake-build-release/CMakeFiles/OpenGL_SS.dir
+C:/Users/EXCALIBUR/Documents/Kod/C++/OpenGL_SS/cmake-build-release/CMakeFiles/edit_cache.dir
+C:/Users/EXCALIBUR/Documents/Kod/C++/OpenGL_SS/cmake-build-release/CMakeFiles/rebuild_cache.dir
