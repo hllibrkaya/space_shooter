@@ -1,0 +1,10 @@
+# depslib dependency file v1.0
+1710623558 source:c:\users\excalibur\documents\kod\c++\winbgi_ss\main.cpp
+	<iostream>
+	<graphics.h>
+	<cmath>
+	<vector>
+	<ctime>
+	<cstdlib>
+	<string>
+

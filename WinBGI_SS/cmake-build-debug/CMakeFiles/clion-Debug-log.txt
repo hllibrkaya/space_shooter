@@ -1,0 +1,1 @@
+CMakeLists.txt not found in C:\Users\EXCALIBUR\Documents\Kod\C++\WinBgi_SS Select CMakeLists.txt

@@ -189,7 +189,7 @@ void createBullet() {
     float angle = (shipAngle + 90.0f) * 3.14159 / 180.0; // Gemiden bakılan açıyı hesapla
     bullet.x = shipX + bulletOffset * cos(angle); // X koordinatını geminin ucuna göre ayarla
     bullet.y = shipY + bulletOffset * sin(angle); // Y koordinatını geminin ucuna göre ayarla
-    bullet.angle = shipAngle; // Mermi açısını geminin dönüş açısına ayarla
+    bullet.angle = shipAngle+90; // Mermi açısını geminin dönüş açısına ayarla
     bullets.push_back(bullet);
 }
 
