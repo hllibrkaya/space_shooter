@@ -6,11 +6,9 @@
 #include <ctime>
 #include <string>
 
-// Ekran boyutları
 int screenWidth = 800;
 int screenHeight = 600;
 
-// Uzay gemisi pozisyonu ve hızı
 float shipX = screenWidth / 2;
 float shipY = screenHeight / 2;
 float shipSpeed = 5.0f;
@@ -18,13 +16,11 @@ float shipSpeed = 5.0f;
 // Uzay gemisi dönme açısı
 float shipAngle = 0.0f;
 
-// Klavye kontrolleri
 bool keyLeft = false;
 bool keyRight = false;
 bool keyUp = false;
 bool keyDown = false;
 
-// Mermi yapısı
 struct Bullet {
     float x;
     float y;
@@ -33,10 +29,8 @@ struct Bullet {
 
 std::vector<Bullet> bullets;
 
-// Mermi ofseti
 const float bulletOffset = 15.0f;
 
-// Asteroid yapısı
 struct Asteroid {
     float x;
     float y;
@@ -54,10 +48,8 @@ int health = 3;
 bool gameStarted = false;
 
 
-// Oyun durumu
 bool gameOver = false;
 
-// İlerleme vektörü hesaplama fonksiyonu
 void updateShipPosition() {
     if (gameOver) return;
 
@@ -66,7 +58,7 @@ void updateShipPosition() {
     if (keyRight)
         shipAngle += 5.0f;
 
-    // Radyan cinsinden dönüş açısını dereceye çevir
+
     float angle = (shipAngle + 90.0f) * 3.14159 / 180.0;
 
     if (keyUp) {
@@ -99,7 +91,7 @@ void updateBullets() {
         bullet.x += 10.0f * cos(angle);
         bullet.y += 10.0f * sin(angle);
 
-        // Eğer mermi ekran dışına çıktıysa, listeden çıkar
+        // Eğer mermi ekran dışına çıktıysa kaldır
         if (bullet.x < 0 || bullet.x > screenWidth || bullet.y < 0 || bullet.y > screenHeight) {
             bullets.erase(bullets.begin() + i);
             --i;
@@ -107,11 +99,11 @@ void updateBullets() {
     }
 }
 
-// Asteroid şekillerini oluşturma fonksiyonu
+// Asteroid şekillerini oluşturma
 void createAsteroidShapes() {
     srand(time(NULL));
     const int numVertices = 12; // Asteroid şekli için kenar sayısı
-    for (int i = 0; i < 5; ++i) { // Başlangıçta daha fazla asteroid oluştur
+    for (int i = 0; i < 5; ++i) {
         Asteroid asteroid;
 
         // Rastgele asteroid hızları
@@ -133,11 +125,9 @@ void createAsteroidShapes() {
     }
 }
 
-// Asteroidlerin hareketini güncelleme fonksiyonu
 void updateAsteroids() {
     if (gameOver) return;
 
-    // Asteroid sayısını kontrol et
     if (asteroids.size() < 10) {
         createAsteroidShapes();
     }
@@ -146,7 +136,7 @@ void updateAsteroids() {
         Asteroid& asteroid = asteroids[i];
         asteroid.x += asteroid.speedX;
         asteroid.y += asteroid.speedY;
-        asteroid.rotationSpeed += 0.1f; // Asteroidlerin dönme hızı sabit artırılıyor
+        asteroid.rotationSpeed += 0.1f;
 
         // Ekran dışına çıkan asteroidleri yeniden konumlandır
         if (asteroid.x < -50) asteroid.x = screenWidth + 50;
@@ -156,7 +146,6 @@ void updateAsteroids() {
 
         // Gemi-asteroid çarpışmasını kontrol et
         if (sqrt(pow(asteroid.x - shipX, 2) + pow(asteroid.y - shipY, 2)) < 25) {
-            // Gemiye çarpma durumu, canı azalt
             health--;
             if (health <= 0) {
                 gameOver = true;
@@ -171,11 +160,9 @@ void updateAsteroids() {
             Bullet& bullet = bullets[j];
             if (bullet.x > asteroid.x - 25 && bullet.x < asteroid.x + 25 &&
                 bullet.y > asteroid.y - 25 && bullet.y < asteroid.y + 25) {
-                // Mermi isabet etti, mermiyi ve asteroidi sil
                 bullets.erase(bullets.begin() + j);
                 asteroids.erase(asteroids.begin() + i);
                 --i;
-                // Skoru artır
                 score += 10;
                 break;
             }
@@ -183,25 +170,24 @@ void updateAsteroids() {
     }
 }
 
-// Mermi oluşturma fonksiyonu
+// Mermi oluşturma
 void createBullet() {
     Bullet bullet;
-    float angle = (shipAngle + 90.0f) * 3.14159 / 180.0; // Gemiden bakılan açıyı hesapla
-    bullet.x = shipX + bulletOffset * cos(angle); // X koordinatını geminin ucuna göre ayarla
-    bullet.y = shipY + bulletOffset * sin(angle); // Y koordinatını geminin ucuna göre ayarla
-    bullet.angle = shipAngle+90; // Mermi açısını geminin dönüş açısına ayarla
+    float angle = (shipAngle + 90.0f) * 3.14159 / 180.0;
+    bullet.x = shipX + bulletOffset * cos(angle);
+    bullet.y = shipY + bulletOffset * sin(angle);
+    bullet.angle = shipAngle+90;
     bullets.push_back(bullet);
 }
 
 void keyboard(unsigned char key, int x, int y) {
-    if (!gameStarted) { // Oyun başlamadıysa
-        gameStarted = true; // Oyunu başlat
+    if (!gameStarted) {
+        gameStarted = true;
         return;
     }
 
-    if (key == 'r' || key == 'R') { // Oyuncu R tuşuna bastığında
-        if (gameOver) { // Game over durumundaysa
-            // Oyunu yeniden başlat
+    if (key == 'r' || key == 'R') { // restart game
+        if (gameOver) {
             gameOver = false;
             score = 0;
             health = 3;
@@ -232,7 +218,6 @@ void keyboard(unsigned char key, int x, int y) {
     }
 }
 
-// Klavye girişi bırakma işleme fonksiyonu
 void keyboardUp(unsigned char key, int x, int y) {
     switch (key) {
         case 'a':
@@ -252,7 +237,7 @@ void keyboardUp(unsigned char key, int x, int y) {
     }
 }
 
-// Ekran yenileme fonksiyonu
+
 void display() {
     glClear(GL_COLOR_BUFFER_BIT);
 
@@ -267,7 +252,7 @@ void display() {
         // Oyun ekranı
         // Uzay gemisini çiz
         glPushMatrix();
-        glTranslatef(shipX, shipY, 0); // Dönüş merkezi gemi ucuna alındı
+        glTranslatef(shipX, shipY, 0);
         glRotatef(shipAngle, 0, 0, 1); // Geminin dönüş açısı
         glBegin(GL_TRIANGLES);
         glColor3f(1.0f, 1.0f, 1.0f);
@@ -365,7 +350,7 @@ int main(int argc, char** argv) {
     glutInit(&argc, argv);
     glutInitDisplayMode(GLUT_DOUBLE | GLUT_RGB);
     glutInitWindowSize(screenWidth, screenHeight);
-    glutCreateWindow("Blasteroids");
+    glutCreateWindow("Space Shooter");
 
     glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
     glMatrixMode(GL_PROJECTION);
